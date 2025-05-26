@@ -3,7 +3,7 @@ import java.awt.*;
 
 
 public class GameWindow extends JFrame {
-    public GameWindow(){
+    public GameWindow() {
         super("Turtle Bridge – demo");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -24,7 +24,7 @@ public class GameWindow extends JFrame {
 
         addKeyListener(board.createKeyListener());
         setFocusable(true);
-        setSize(500,600);
+        setSize(500, 600);
         setLocationRelativeTo(null);
 
         new DebugMatrixWindow(board).setVisible(true);
@@ -34,7 +34,10 @@ public class GameWindow extends JFrame {
         board.addGameEventListener(loop);
         loop.addGameEventListener(board);
     }
-    public void start(){ setVisible(true);}
+
+    public void start() {
+        setVisible(true);
+    }
 }
 
 

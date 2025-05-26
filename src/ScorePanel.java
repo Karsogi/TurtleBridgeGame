@@ -1,8 +1,6 @@
 import java.awt.Color;
 import javax.swing.JPanel;
 
-
-
 /** Верхняя панель со счётчиком из трёх семисегментных индикаторов. */
 public class ScorePanel extends JPanel implements GameEventListener {
 

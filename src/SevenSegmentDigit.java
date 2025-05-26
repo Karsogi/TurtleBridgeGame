@@ -13,9 +13,9 @@ import javax.swing.JComponent;
  */
 public class SevenSegmentDigit extends JComponent {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; // TODO: Check if needed
 
-    private static final Color ON_COLOR  = new Color(0, 255, 0);
+    private static final Color ON_COLOR = new Color(0, 255, 0);
     private static final Color OFF_COLOR = new Color(0, 60, 0);
 
     // порядок битов: a b c d e f g (MSB → LSB)
@@ -38,7 +38,9 @@ public class SevenSegmentDigit extends JComponent {
         setPreferredSize(new Dimension(40, 60));
     }
 
-    /** Установить отображаемую цифру (0‑9). */
+    /**
+     * Установить отображаемую цифру (0‑9).
+     */
     public void setValue(int v) {
         if (v < 0 || v > 9) v = 0;
         if (value != v) {
@@ -47,7 +49,8 @@ public class SevenSegmentDigit extends JComponent {
         }
     }
 
-    @Override protected void paintComponent(Graphics g) {
+    @Override
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
