@@ -55,30 +55,30 @@ public class SevenSegmentDigit extends JComponent {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int w = getWidth();
-        int h = getHeight();
-        int t = Math.max(2, Math.min(w, h) / 10); // толщина сегмента
+        int width = getWidth();
+        int height = getHeight();
+        int thickness = Math.max(2, Math.min(width, height) / 10); // толщина сегмента
 
         // размеры внутренних сегментов
-        int hw = w - 2 * t;             // горизонтальная длина
-        int vh = (h - 3 * t) / 2;       // вертикальная длина
+        int segmentWidth = width - 2 * thickness;             // горизонтальная длина
+        int segmentHeight = (height - 3 * thickness) / 2;       // вертикальная длина
 
         // precompute rectangles for 7 segments
         Rectangle2D[] seg = new Rectangle2D[7];
         // a
-        seg[0] = new Rectangle2D.Double(t, 0, hw, t);
+        seg[0] = new Rectangle2D.Double(thickness, 0, segmentWidth, thickness);
         // b
-        seg[1] = new Rectangle2D.Double(w - t, t, t, vh);
+        seg[1] = new Rectangle2D.Double(width - thickness, thickness, thickness, segmentHeight);
         // c
-        seg[2] = new Rectangle2D.Double(w - t, t + vh + t, t, vh);
+        seg[2] = new Rectangle2D.Double(width - thickness, thickness + segmentHeight + thickness, thickness, segmentHeight);
         // d
-        seg[3] = new Rectangle2D.Double(t, h - t, hw, t);
+        seg[3] = new Rectangle2D.Double(thickness, height - thickness, segmentWidth, thickness);
         // e
-        seg[4] = new Rectangle2D.Double(0, t + vh + t, t, vh);
+        seg[4] = new Rectangle2D.Double(0, thickness + segmentHeight + thickness, thickness, segmentHeight);
         // f
-        seg[5] = new Rectangle2D.Double(0, t, t, vh);
+        seg[5] = new Rectangle2D.Double(0, thickness, thickness, segmentHeight);
         // g (middle)
-        seg[6] = new Rectangle2D.Double(t, t + vh, hw, t);
+        seg[6] = new Rectangle2D.Double(thickness, thickness + segmentHeight, segmentWidth, thickness);
 
         int mask = DIGIT_MASKS[value];
         for (int i = 0; i < 7; i++) {

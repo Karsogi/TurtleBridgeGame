@@ -10,9 +10,12 @@ public class CellRenderer extends JLabel implements TableCellRenderer {
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSel, boolean hasFocus, int r, int c) {
-        int v = (Integer) value; // never use single-letter names anywhere except in loops
-        switch (v) {
+    public Component getTableCellRendererComponent(JTable table, Object value,
+                                                   boolean isSelected, boolean hasFocus,
+                                                   int row, int column) {
+
+        int valueInt = (Integer) value;
+        switch (valueInt) {
             case Board.WATER -> setBackground(new Color(0x004488));
             case Board.TURTLE -> setBackground(new Color(0x339933));
             case Board.HERO -> setBackground(new Color(0xFFCC00));

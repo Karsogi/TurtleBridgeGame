@@ -4,15 +4,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GameEventSupport {
     private final List<GameEventListener> listeners = new CopyOnWriteArrayList<>();
 
-    public void addGameEventListener(GameEventListener l) {
-        if (l != null) listeners.add(l);
+    public void addGameEventListener(GameEventListener listener) {
+        if (listener != null) listeners.add(listener);
     }
 
-    public void removeGameEventListener(GameEventListener l) {
-        listeners.remove(l);
+    public void removeGameEventListener(GameEventListener listener) {
+        listeners.remove(listener);
     }
 
     public void fire(GameEvent e) {
-        for (GameEventListener l : listeners) l.handle(e);
+        for (GameEventListener listener : listeners) listener.handle(e);
     }
 }

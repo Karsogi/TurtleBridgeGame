@@ -12,9 +12,9 @@ public class GuiUtil {
         int cell = Math.min(area.width / cols, area.height / rows);
         if (cell < 1) cell = 1;                            // минимальная высота — 1 пиксель
         table.setRowHeight(cell);
-        for (int c = 0; c < cols; c++) {
-            table.getColumnModel().getColumn(c).setPreferredWidth(cell);
-            table.getColumnModel().getColumn(c).setMinWidth(cell);
+        for (int col = 0; col < cols; col++) {
+            table.getColumnModel().getColumn(col).setPreferredWidth(cell);
+            table.getColumnModel().getColumn(col).setMinWidth(cell);
         }
     }
 

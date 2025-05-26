@@ -28,13 +28,13 @@ public class Board extends AbstractTableModel implements GameEventListener {
     }
 
     @Override
-    public Object getValueAt(int r, int c) {
-        return cells[r][c];
+    public Object getValueAt(int row, int column) {
+        return cells[row][column];
     }
 
-    private void put(int r, int c, int v) {
-        cells[r][c] = v;
-        fireTableCellUpdated(r, c);
+    private void put(int row, int column, int value) {
+        cells[row][column] = value;
+        fireTableCellUpdated(row, column);
     }
 
     public KeyAdapter createKeyListener() {
@@ -63,7 +63,7 @@ public class Board extends AbstractTableModel implements GameEventListener {
     }
 
     private void moveHero(int dx) {
-        int nc = heroCol + dx; // what's nc?
+        int nc = heroCol + dx; // what's nc? dx is delta x?
         if (nc < 0 || nc >= COLS) return;
         put(heroRow, heroCol, WATER);
         heroCol = nc;
@@ -85,12 +85,12 @@ public class Board extends AbstractTableModel implements GameEventListener {
         events.fire(new ResetEvent(this));
     }
 
-    public void addGameEventListener(GameEventListener l) {
-        events.addGameEventListener(l);
+    public void addGameEventListener(GameEventListener listener) {
+        events.addGameEventListener(listener);
     }
 
-    public void removeGameEventListener(GameEventListener l) {
-        events.removeGameEventListener(l);
+    public void removeGameEventListener(GameEventListener listener) {
+        events.removeGameEventListener(listener);
     }
 
     @Override
@@ -99,10 +99,10 @@ public class Board extends AbstractTableModel implements GameEventListener {
     }
 
     private void stepTurtles() {
-        for (int r = 1; r < ROWS; r++)
-            for (int c = 0; c < COLS; c++) {
-                if (cells[r][c] == TURTLE) cells[r][c] = WATER;
-                else if (cells[r][c] == WATER && rnd.nextDouble() < 0.25) cells[r][c] = TURTLE;
+        for (int row = 1; row < ROWS; row++)
+            for (int col = 0; col < COLS; col++) {
+                if (cells[row][col] == TURTLE) cells[row][col] = WATER;
+                else if (cells[row][col] == WATER && rnd.nextDouble() < 0.25) cells[row][col] = TURTLE;
             }
         fireTableDataChanged();
     }
