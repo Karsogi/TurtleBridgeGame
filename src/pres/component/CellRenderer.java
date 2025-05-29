@@ -1,3 +1,7 @@
+package pres.component;
+
+import game.Board;
+
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;

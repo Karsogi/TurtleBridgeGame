@@ -1,3 +1,5 @@
+package game.event;
+
 import java.util.EventObject;
 
 /** Базовый класс всех игровых событий. */

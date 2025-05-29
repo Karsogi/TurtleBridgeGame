@@ -1,3 +1,8 @@
+package game;
+
+import game.event.*;
+import pres.component.SevenSegmentDigit;
+
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -14,7 +19,7 @@ public class ScorePanel extends JPanel implements GameEventListener {
             add(digits[i]);
         }
         updateDisplay();
-        // подписываемся на события от Board (через шину board.eventSupport)
+        // подписываемся на события от game.Board (через шину board.eventSupport)
         board.addGameEventListener(this);
     }
 

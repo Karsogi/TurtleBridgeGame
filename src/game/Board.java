@@ -1,3 +1,7 @@
+package game;
+
+import game.event.*;
+
 import javax.swing.table.AbstractTableModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,7 +14,6 @@ public class Board extends AbstractTableModel implements GameEventListener {
     private final int[][] cells = new int[ROWS][COLS];
     private int heroRow = 0, heroCol = 0;
 
-    private final GameEventSupport events = new GameEventSupport();
     private final Random rnd = new Random();
 
     public Board() {
@@ -52,10 +55,10 @@ public class Board extends AbstractTableModel implements GameEventListener {
                         reset();
                         break;
                     case KeyEvent.VK_S:
-                        events.fire(new StartEvent(this));
+                        EventBus.fire(new StartEvent(this));
                         break;
                     case KeyEvent.VK_P:
-                        events.fire(new PlusOneEvent(this));
+                        EventBus.fire(new PlusOneEvent(this));
                         break;
                 }
             }
@@ -82,15 +85,15 @@ public class Board extends AbstractTableModel implements GameEventListener {
         cells[0][0] = HERO;
 
         fireTableDataChanged();
-        events.fire(new ResetEvent(this));
+        EventBus.fire(new ResetEvent(this));
     }
 
     public void addGameEventListener(GameEventListener listener) {
-        events.addGameEventListener(listener);
+        EventBus.addGameEventListener(listener);
     }
 
     public void removeGameEventListener(GameEventListener listener) {
-        events.removeGameEventListener(listener);
+        EventBus.removeGameEventListener(listener);
     }
 
     @Override

@@ -1,3 +1,5 @@
+import pres.view.GameWindow;
+
 import javax.swing.SwingUtilities;
 
 public class Main {

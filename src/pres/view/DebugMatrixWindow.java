@@ -1,3 +1,7 @@
+package pres.view;
+
+import game.Board;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -5,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 /**
- * Независимое окно для просмотра текущей int‑матрицы Board.
+ * Независимое окно для просмотра текущей int‑матрицы game.Board.
  * Полезно при отладке: отображает raw‑коды ячеек.
  */
 public class DebugMatrixWindow extends JFrame {

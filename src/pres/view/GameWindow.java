@@ -1,3 +1,11 @@
+package pres.view;
+
+import game.Board;
+import game.GameLoop;
+import game.ScorePanel;
+import pres.component.CellRenderer;
+import pres.util.GuiUtil;
+
 import javax.swing.*;
 import java.awt.*;
 

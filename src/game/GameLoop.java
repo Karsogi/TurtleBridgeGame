@@ -1,11 +1,13 @@
+package game;
+
+import game.event.*;
+
 public class GameLoop extends Thread implements GameEventListener {
     private static final GameLoop INSTANCE = new GameLoop();
 
     public static GameLoop getInstance() {
         return INSTANCE;
     }
-
-    private final GameEventSupport events = new GameEventSupport();
     private boolean running = false;
     private long tickInterval = 600; // names should be more descriptive, like `tickInterval`
 
@@ -17,7 +19,7 @@ public class GameLoop extends Thread implements GameEventListener {
     public void run() {
         while (true) {
             if (running) {
-                events.fire(new TickEvent(this));
+                EventBus.fire(new TickEvent(this));
                 try {
                     sleep(tickInterval);
                 } catch (InterruptedException ignored) {
@@ -56,11 +58,11 @@ public class GameLoop extends Thread implements GameEventListener {
 
     /* ---------- доступ к «шине» ---------- */
     public void addGameEventListener(GameEventListener l) {
-        events.addGameEventListener(l);
+        EventBus.addGameEventListener(l);
     }
 
     public void removeGameEventListener(GameEventListener l) {
-        events.removeGameEventListener(l);
+        EventBus.removeGameEventListener(l);
     }
 }
 
