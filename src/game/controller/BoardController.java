@@ -39,8 +39,9 @@ public final class BoardController implements GameEventListener {
             SwingUtilities.invokeLater(() -> {      // на EDT
                 int dx = pendingDx.getAndSet(0);    // забираем + обнуляем
                 if (dx != 0) model.moveHero(dx);
-//                model.stepDown();
-//                model.updateTurtles();
+                model.updateFish();
+                model.updateTurtles();
+                model.updateHero();
             });
         } else if (e instanceof ResetEvent) {
             pendingDx.set(0);                       // чистим буфер

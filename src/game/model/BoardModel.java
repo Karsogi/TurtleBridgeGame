@@ -9,6 +9,9 @@ public class BoardModel extends AbstractTableModel {
     public static final int ROWS = 12, COLS = 5;
     public static final int WATER = 0, HERO = 1, TURTLE = 2, FISH = 3;
 
+    public static final int TURTLE_DIVING_DEPTH = 3;
+    public static final int TURTLE_DIVE_TICKS = 3; // how many ticks turtle stays underwater
+
     private final int[][] cells = new int[ROWS][COLS];
 
     private final List<Fish> fishes;
@@ -45,32 +48,72 @@ public class BoardModel extends AbstractTableModel {
         put(hero.getRow(), hero.getCol(), HERO);
     }
 
-    public void raiseFish() {
+    public void updateFish() {
         for (Fish fish : fishes) {
-            if (fish.getRow() > 0) {
-                put(fish.getRow(), fish.getCol(), WATER);
-                fish.up();
-                put(fish.getRow(), fish.getCol(), FISH);
-            } else {
-                put(fish.getRow(), fish.getCol(), WATER);
-            }
+            raiseFish(fish);
         }
     }
 
-//    public void updateTurtles() {           // мигают черепахи
-//        for (int r = 1; r < ROWS; r++) {
-//            for (int c = 0; c < COLS; c++) {
-//                if (cells[r][c] == TURTLE) cells[r][c] = WATER;
-//                else if (rnd.nextDouble() < .25) cells[r][c] = TURTLE;
-//            }
-//        }
-//        fireTableDataChanged();
-//    }
+    private void raiseFish(Fish fish) {
+        put(fish.getRow(), fish.getCol(), WATER);
+        fish.up();
+        put(fish.getRow(), fish.getCol(), FISH);
+    }
+
+    public void updateTurtles() {
+        for (Turtle turtle : turtles) {
+            if (hasFishClose(turtle)) {
+                catchFish(turtle);
+                // spawn new fish
+            } else {
+                if (divedForFish(turtle)) {
+                    System.out.println("Turtle stays for: " + turtle.diveTicks);
+                    if (turtle.isTimeTorReturn()) {
+                        returnTurtleToSurface(turtle);
+                    } else {
+                        turtle.diveTicks--;
+                    }
+                }
+            }
+        }
+        fireTableDataChanged();
+    }
+
+    private boolean hasFishClose(Turtle turtle) {
+        return (int) getValueAt(turtle.row + TURTLE_DIVING_DEPTH, turtle.col) == FISH;
+    }
+
+    private void catchFish(Turtle turtle) {
+        put(turtle.getRow(), turtle.getCol(), WATER);
+        turtle.catchFish();
+        fishes.stream().filter(f -> f.getRow() == turtle.getRow() && f.getCol() == turtle.getCol()).findFirst()
+                .ifPresent(fishes::remove);
+        put(turtle.getRow(), turtle.getCol(), TURTLE);
+    }
+
+    private static boolean divedForFish(Turtle turtle) {
+        return turtle.getRow() == 1 + TURTLE_DIVING_DEPTH;
+    }
+
+    private void returnTurtleToSurface(Turtle turtle) {
+        put(turtle.getRow(), turtle.getCol(), WATER);
+        turtle.returnToSurface();
+        put(turtle.getRow(), turtle.getCol(), TURTLE);
+    }
+
+    public void updateHero() {
+        if ((int) getValueAt(hero.row + 1, hero.col) == WATER) {
+            System.out.println("HERO DROWNED!");
+            reset();
+        }
+    }
 
     public void reset() {
         fishes.clear();
         turtles.clear();
         hero.reset();
+
+        Fish fish = new Fish(ROWS - 1, ThreadLocalRandom.current().nextInt(COLS));
 
         for (int r = 0; r < ROWS; r++)
             for (int c = 0; c < COLS; c++)
@@ -82,7 +125,8 @@ public class BoardModel extends AbstractTableModel {
         }
 
         cells[0][0] = HERO;
-        cells[ROWS - 1][ThreadLocalRandom.current().nextInt(COLS)] = FISH;
+        cells[fish.getRow()][fish.getCol()] = FISH;
+        fishes.add(fish);
         fireTableDataChanged();
     }
 
