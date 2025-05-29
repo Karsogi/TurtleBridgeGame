@@ -1,6 +1,6 @@
 package pres.view;
 
-import game.Board;
+import game.model.BoardModel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,7 +14,7 @@ import javax.swing.JTable;
  */
 public class DebugMatrixWindow extends JFrame {
 
-    public DebugMatrixWindow(Board board) {
+    public DebugMatrixWindow(BoardModel board) {
         super("Debug: Matrix");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());

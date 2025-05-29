@@ -3,8 +3,8 @@ package game;
 import game.event.*;
 import pres.component.SevenSegmentDigit;
 
-import java.awt.Color;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /** Верхняя панель со счётчиком из трёх семисегментных индикаторов. */
 public class ScorePanel extends JPanel implements GameEventListener {
@@ -12,15 +12,14 @@ public class ScorePanel extends JPanel implements GameEventListener {
     private final SevenSegmentDigit[] digits = new SevenSegmentDigit[3];
     private int score = 0;
 
-    public ScorePanel(Board board) {
+    public ScorePanel() {
         setBackground(Color.BLACK);
         for (int i = 0; i < 3; i++) {
             digits[i] = new SevenSegmentDigit();
             add(digits[i]);
         }
         updateDisplay();
-        // подписываемся на события от game.Board (через шину board.eventSupport)
-        board.addGameEventListener(this);
+        EventBus.addGameEventListener(this);
     }
 
     private void updateDisplay() {
@@ -31,7 +30,8 @@ public class ScorePanel extends JPanel implements GameEventListener {
         }
     }
 
-    @Override public void handle(GameEvent e) {
+    @Override
+    public void handle(GameEvent e) {
         if (e instanceof ResetEvent || e instanceof StartEvent) {
             score = 0;
         } else if (e instanceof PlusOneEvent) {

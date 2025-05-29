@@ -10,6 +10,7 @@ public final class EventBus {
     private static final List<GameEventListener> listeners = new CopyOnWriteArrayList<>();
 
     public static void addGameEventListener(GameEventListener listener) {
+        System.out.println("EventBus: add listener " + listener.getClass().getSimpleName());
         if (listener != null) listeners.add(listener);
     }
 
@@ -18,6 +19,8 @@ public final class EventBus {
     }
 
     public static void fire(GameEvent e) {
+        System.out.println("EventBus: fire " + e.getClass().getSimpleName());
+        System.out.println("EventBus: listeners: " + listeners);
         for (GameEventListener listener : listeners) listener.handle(e);
     }
 }

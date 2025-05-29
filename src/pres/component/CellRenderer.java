@@ -1,6 +1,6 @@
 package pres.component;
 
-import game.Board;
+import game.model.BoardModel;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -20,9 +20,10 @@ public class CellRenderer extends JLabel implements TableCellRenderer {
 
         int valueInt = (Integer) value;
         switch (valueInt) {
-            case Board.WATER -> setBackground(new Color(0x004488));
-            case Board.TURTLE -> setBackground(new Color(0x339933));
-            case Board.HERO -> setBackground(new Color(0xFFCC00));
+            case BoardModel.WATER -> setBackground(new Color(0x004488));
+            case BoardModel.TURTLE -> setBackground(new Color(0x339933));
+            case BoardModel.HERO -> setBackground(new Color(0xFFCC00));
+            case BoardModel.FISH -> setBackground(new Color(0xD01A63));
             default -> setBackground(Color.BLACK);
         }
         return this;
