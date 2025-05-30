@@ -27,6 +27,7 @@ public final class BoardController implements GameEventListener {
                         EventBus.fire(new ResetEvent(this));
                     }
                     case KeyEvent.VK_S -> EventBus.fire(new StartEvent(this));
+                    case KeyEvent.VK_P -> model.incScore();
                 }
             }
         });
@@ -40,11 +41,14 @@ public final class BoardController implements GameEventListener {
                 int dx = pendingDx.getAndSet(0);    // забираем + обнуляем
                 if (dx != 0) model.moveHero(dx);
                 model.updateFish();
+                model.spawnFishesIfNeeded();
                 model.updateTurtles();
                 model.updateHero();
             });
         } else if (e instanceof ResetEvent) {
             pendingDx.set(0);                       // чистим буфер
+        } else if (e instanceof PlusOneEvent) {
+
         }
     }
 }

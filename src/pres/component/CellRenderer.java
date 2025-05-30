@@ -22,7 +22,8 @@ public class CellRenderer extends JLabel implements TableCellRenderer {
         switch (valueInt) {
             case BoardModel.WATER -> setBackground(new Color(0x004488));
             case BoardModel.TURTLE -> setBackground(new Color(0x339933));
-            case BoardModel.HERO -> setBackground(new Color(0xFFCC00));
+            case BoardModel.HERO_EMPTY -> setBackground(new Color(0xFFCC00));
+            case BoardModel.HERO_FULL -> setBackground(new Color(0xF30606));
             case BoardModel.FISH -> setBackground(new Color(0xD01A63));
             default -> setBackground(Color.BLACK);
         }

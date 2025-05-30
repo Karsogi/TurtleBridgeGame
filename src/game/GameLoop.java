@@ -11,7 +11,7 @@ public class GameLoop extends Thread implements GameEventListener {
     }
 
     private boolean running = false;
-    private long tickInterval = 600; // names should be more descriptive, like `tickInterval`
+    private long tickInterval = 450; // names should be more descriptive, like `tickInterval`
 
     private GameLoop() {
         System.out.println("GameLoop: init");
@@ -47,7 +47,7 @@ public class GameLoop extends Thread implements GameEventListener {
             stopLoop();
             tickInterval = 600;
         } else if (e instanceof PlusOneEvent && tickInterval > 120) {
-            tickInterval -= 50;
+            tickInterval -= 10;
         }
     }
 

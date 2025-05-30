@@ -1,7 +1,6 @@
 package game.model;
 
-import static game.model.BoardModel.TURTLE_DIVE_TICKS;
-import static game.model.BoardModel.TURTLE_DIVING_DEPTH;
+import static game.model.BoardModel.*;
 
 public class Turtle extends GameEntity {
 
@@ -12,12 +11,12 @@ public class Turtle extends GameEntity {
     }
 
     public void catchFish() {
-        this.row += TURTLE_DIVING_DEPTH;
+        this.row = TURTLE_DIVING_DEPTH;
         diveTicks = TURTLE_DIVE_TICKS - 1;
     }
 
     public void returnToSurface() {
-        this.row -= TURTLE_DIVING_DEPTH;
+        this.row = TURTLE_NORMAL_DEPTH;
     }
 
     public boolean isTimeTorReturn() {

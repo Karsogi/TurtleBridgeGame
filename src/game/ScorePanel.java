@@ -10,7 +10,7 @@ import java.awt.*;
 public class ScorePanel extends JPanel implements GameEventListener {
 
     private final SevenSegmentDigit[] digits = new SevenSegmentDigit[3];
-    private int score = 0;
+    private int shown = 0;
 
     public ScorePanel() {
         setBackground(Color.BLACK);
@@ -23,7 +23,7 @@ public class ScorePanel extends JPanel implements GameEventListener {
     }
 
     private void updateDisplay() {
-        int val = score;
+        int val = shown;
         for (int i = 2; i >= 0; i--) {
             digits[i].setValue(val % 10);
             val /= 10;
@@ -33,9 +33,9 @@ public class ScorePanel extends JPanel implements GameEventListener {
     @Override
     public void handle(GameEvent e) {
         if (e instanceof ResetEvent || e instanceof StartEvent) {
-            score = 0;
+            shown = 0;
         } else if (e instanceof PlusOneEvent) {
-            score = Math.min(999, score + 1);
+            shown = Math.min(999, shown + 1);
         }
         updateDisplay();
     }
