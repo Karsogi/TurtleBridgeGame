@@ -6,13 +6,12 @@ import java.awt.event.*;
 
 public class GuiUtil {
 
-    /**
-     * Прямой пересчёт размеров клеток
-     */
+    private GuiUtil() {}
+
     public static void scaleTable(JTable table, int rows, int cols, Dimension area) {
-        if (area.width <= 0 || area.height <= 0) return;        // защита от нулевых размеров
+        if (area.width <= 0 || area.height <= 0) return;
         int cell = Math.min(area.width / cols, area.height / rows);
-        if (cell < 1) cell = 1;                            // минимальная высота — 1 пиксель
+        if (cell < 1) cell = 1;
         table.setRowHeight(cell);
         for (int col = 0; col < cols; col++) {
             table.getColumnModel().getColumn(col).setPreferredWidth(cell);
@@ -20,9 +19,6 @@ public class GuiUtil {
         }
     }
 
-    /**
-     * Вешает слушатель на viewport и автоматически подгоняет таблицу при ресайзе
-     */
     public static void setupAutoScale(JTable table, int rows, int cols) {
         Component target = (table.getParent() instanceof JViewport)
                 ? table.getParent()
@@ -34,7 +30,6 @@ public class GuiUtil {
                 scaleTable(table, rows, cols, target.getSize());
             }
         });
-        // первичная подгонка
         scaleTable(table, rows, cols, target.getSize());
     }
 }

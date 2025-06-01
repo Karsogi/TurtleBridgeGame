@@ -1,26 +1,15 @@
 package pres.component;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JComponent;
 
-/**
- * Полноценный семисегментный индикатор 0‑9.
- * Масштабируется под текущий размер компонента.
- */
 public class SevenSegmentDigit extends JComponent {
-
-    private static final long serialVersionUID = 1L; // TODO: Check if needed
 
     private static final Color ON_COLOR = new Color(0, 255, 0);
     private static final Color OFF_COLOR = new Color(0, 60, 0);
 
-    // порядок битов: a b c d e f g (MSB → LSB)
     private static final int[] DIGIT_MASKS = {
             0b1111110, // 0
             0b0110000, // 1
@@ -40,9 +29,6 @@ public class SevenSegmentDigit extends JComponent {
         setPreferredSize(new Dimension(40, 60));
     }
 
-    /**
-     * Установить отображаемую цифру (0‑9).
-     */
     public void setValue(int v) {
         if (v < 0 || v > 9) v = 0;
         if (value != v) {
@@ -59,11 +45,10 @@ public class SevenSegmentDigit extends JComponent {
 
         int width = getWidth();
         int height = getHeight();
-        int thickness = Math.max(2, Math.min(width, height) / 10); // толщина сегмента
+        int thickness = Math.max(2, Math.min(width, height) / 10);
 
-        // размеры внутренних сегментов
-        int segmentWidth = width - 2 * thickness;             // горизонтальная длина
-        int segmentHeight = (height - 3 * thickness) / 2;       // вертикальная длина
+        int segmentWidth = width - 2 * thickness;
+        int segmentHeight = (height - 3 * thickness) / 2;
 
         // precompute rectangles for 7 segments
         Rectangle2D[] seg = new Rectangle2D[7];

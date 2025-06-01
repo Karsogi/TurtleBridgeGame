@@ -6,7 +6,6 @@ import pres.component.SevenSegmentDigit;
 import javax.swing.*;
 import java.awt.*;
 
-/** Верхняя панель со счётчиком из трёх семисегментных индикаторов. */
 public class ScorePanel extends JPanel implements GameEventListener {
 
     private final SevenSegmentDigit[] digits = new SevenSegmentDigit[3];

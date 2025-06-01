@@ -2,8 +2,8 @@ package game.model;
 
 public class Hero extends GameEntity {
 
-    private boolean hasPackage;
-    private int currentState;
+    protected boolean hasPackage;
+    protected int currentState;
 
     public Hero(int row, int col) {
         super(row, col);

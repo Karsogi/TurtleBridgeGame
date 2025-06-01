@@ -18,12 +18,12 @@ public final class BoardController implements GameEventListener {
         this.model = model;
         focusTarget.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {          // только буфер
+            public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_A -> pendingDx.set(-1);
                     case KeyEvent.VK_D -> pendingDx.set(+1);
                     case KeyEvent.VK_R -> {
-                        model.reset();              // данные
+                        model.reset();
                         EventBus.fire(new ResetEvent(this));
                     }
                     case KeyEvent.VK_S -> EventBus.fire(new StartEvent(this));
@@ -31,14 +31,14 @@ public final class BoardController implements GameEventListener {
                 }
             }
         });
-        EventBus.addGameEventListener(this);                         // слушаем Tick
+        EventBus.addGameEventListener(this);
     }
 
     @Override
     public void handle(GameEvent e) {
         if (e instanceof TickEvent) {
-            SwingUtilities.invokeLater(() -> {      // на EDT
-                int dx = pendingDx.getAndSet(0);    // забираем + обнуляем
+            SwingUtilities.invokeLater(() -> {
+                int dx = pendingDx.getAndSet(0);
                 if (dx != 0) model.moveHero(dx);
                 model.updateFish();
                 model.spawnFishesIfNeeded();
@@ -46,9 +46,7 @@ public final class BoardController implements GameEventListener {
                 model.updateHero();
             });
         } else if (e instanceof ResetEvent) {
-            pendingDx.set(0);                       // чистим буфер
-        } else if (e instanceof PlusOneEvent) {
-
+            pendingDx.set(0);
         }
     }
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BoardModel extends AbstractTableModel {
     public static final int ROWS = 12, COLS = 5;
-    public static final int WATER = 0, HERO_EMPTY = 1, HERO_FULL = 2, TURTLE = 3, FISH = 4;
+    public static final int WATER = 0, HERO_EMPTY = 1, HERO_FULL = 2, TURTLE_HEAD_UP = 3, TURTLE_HEAD_DOWN = 4, FISH = 5;
 
     public static final int TURTLE_DIVING_DEPTH = 4;
     public static final int TURTLE_NORMAL_DEPTH = 1;
@@ -93,9 +93,11 @@ public class BoardModel extends AbstractTableModel {
     }
 
     private void raiseFish(Fish fish) {
-        put(fish.getRow(), fish.getCol(), WATER);
-        fish.up();
-        put(fish.getRow(), fish.getCol(), FISH);
+        if (fish.getRow() > TURTLE_NORMAL_DEPTH + 2) {
+            put(fish.getRow(), fish.getCol(), WATER);
+            fish.up();
+            put(fish.getRow(), fish.getCol(), FISH);
+        }
     }
 
     public void spawnFishesIfNeeded() {
@@ -114,13 +116,15 @@ public class BoardModel extends AbstractTableModel {
         if (n % 10 != 0) cnt++;
         if ((n / 10) % 10 != 0) cnt++;
         if ((n / 100) % 10 != 0) cnt++;
-        return cnt;   // не меньше 1, не больше 3
+        return cnt;
     }
 
     public void updateTurtles() {
         for (Turtle turtle : turtles) {
-            if (hasFishClose(turtle)) {
-                catchFish(turtle);
+            int depthOfCloseFish = hasFishClose(turtle);
+
+            if (depthOfCloseFish != -1 && turtle.currentState == TURTLE_HEAD_DOWN) {
+                catchFish(turtle, depthOfCloseFish);
             } else {
                 if (divedForFish(turtle)) {
                     System.out.println("Turtle stays for: " + turtle.diveTicks);
@@ -131,30 +135,43 @@ public class BoardModel extends AbstractTableModel {
                     }
                 }
             }
+            updateTurtlesHeads(turtle);
         }
         fireTableDataChanged();
     }
 
-    private boolean hasFishClose(Turtle turtle) {
-        return (int) getValueAt(TURTLE_DIVING_DEPTH, turtle.col) == FISH;
+    private void updateTurtlesHeads(Turtle turtle) {
+        if (ThreadLocalRandom.current().nextInt(0, 2) == 0) { // 50% chance to change head state
+            int newState = turtle.changeState();
+            put(turtle.getRow(), turtle.getCol(), newState);
+        }
     }
 
-    private void catchFish(Turtle turtle) {
+    private int hasFishClose(Turtle turtle) {
+        for (int i = 0; i < TURTLE_DIVING_DEPTH - TURTLE_NORMAL_DEPTH; i++) {
+            if ((int) getValueAt(turtle.getRow() + i, turtle.getCol()) == FISH) {
+                return turtle.getRow() + i;
+            }
+        }
+        return -1;
+    }
+
+    private void catchFish(Turtle turtle, int depthOfCloseFish) {
         put(turtle.getRow(), turtle.getCol(), WATER);
-        turtle.catchFish();
+        turtle.catchFish(depthOfCloseFish);
         fishes.stream().filter(f -> f.getRow() == turtle.getRow() && f.getCol() == turtle.getCol()).findFirst()
                 .ifPresent(fishes::remove);
-        put(turtle.getRow(), turtle.getCol(), TURTLE);
+        put(turtle.getRow(), turtle.getCol(), depthOfCloseFish);
     }
 
     private static boolean divedForFish(Turtle turtle) {
-        return turtle.getRow() == TURTLE_DIVING_DEPTH;
+        return turtle.getRow() != TURTLE_NORMAL_DEPTH;
     }
 
     private void returnTurtleToSurface(Turtle turtle) {
         put(turtle.getRow(), turtle.getCol(), WATER);
         turtle.returnToSurface();
-        put(turtle.getRow(), turtle.getCol(), TURTLE);
+        put(turtle.getRow(), turtle.getCol(), TURTLE_HEAD_DOWN);
     }
 
     public void updateHero() {
@@ -179,11 +196,10 @@ public class BoardModel extends AbstractTableModel {
 
         for (int c = 0; c < COLS; c++) {
             turtles.add(new Turtle(TURTLE_NORMAL_DEPTH, c));
-            cells[1][c] = TURTLE;
+            cells[1][c] = TURTLE_HEAD_DOWN;
         }
 
         cells[0][0] = hero.getCurrentState();
-        System.out.println(hero.getCurrentState());
         cells[fish.getRow()][fish.getCol()] = FISH;
         fishes.add(fish);
         fireTableDataChanged();
